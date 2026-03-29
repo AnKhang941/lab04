@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    @Override
-    Page<Product> findAll(Pageable pageable);
-    List<Product> findByNameContainingIgnoreCase(String name);
+    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
     Page<Product> findByCategoryId(Integer categoryId, Pageable pageable);
 }

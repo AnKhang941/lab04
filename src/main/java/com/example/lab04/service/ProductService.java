@@ -37,10 +37,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
     public List<Product> GetSearchProducts(String key) {
-        return productRepository.findByNameContainingIgnoreCase(key);
-    }
-    public Page<Product> getProductByPage(int page, int pagesize) {
-        return  productRepository.findAll(PageRequest.of(page, pagesize));
+        return productRepository.findByNameContainingIgnoreCase(key, Pageable.unpaged())
+                .getContent();
     }
     public Page<Product> getProductByPage(int page, int pagesize, String sort, Integer categoryId) {
         Sort sortOrder = Sort.unsorted();
@@ -57,6 +55,21 @@ public class ProductService {
             return productRepository.findByCategoryId(categoryId, pageable);
         }
 
+        return productRepository.findAll(pageable);
+    }
+    public Page<Product> searchByPage(String key, int page, int pagesize, String sort, Integer categoryId) {
+        Sort sortOrder = Sort.unsorted();
+        if ("asc".equals(sort)) sortOrder = Sort.by("price").ascending();
+        else if ("desc".equals(sort)) sortOrder = Sort.by("price").descending();
+
+        Pageable pageable = PageRequest.of(page, pagesize, sortOrder);
+
+        if (key != null && !key.isEmpty()) {
+            return productRepository.findByNameContainingIgnoreCase(key,pageable);
+        }
+        if (categoryId != null) {
+            return productRepository.findByCategoryId(categoryId, pageable);
+        }
         return productRepository.findAll(pageable);
     }
 

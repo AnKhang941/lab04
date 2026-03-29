@@ -21,6 +21,23 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
+//    @GetMapping
+//    public String listProducts(Model model,
+//                               @RequestParam(defaultValue = "0") int page,
+//                               @RequestParam(defaultValue = "") String sort,
+//                               @RequestParam(required = false) Integer categoryId) {
+//
+//        Page<Product> products = productService.get(page, 5);
+//
+//        model.addAttribute("products", products);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", products.getTotalPages());
+//        model.addAttribute("sort", sort);
+//        model.addAttribute("categoryId", categoryId);
+//        model.addAttribute("categories", productService.getAllCategories());
+//
+//        return "product/list";
+//    }
     @GetMapping
     public String listProducts(Model model,
                                @RequestParam(defaultValue = "0") int page,
@@ -56,18 +73,19 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public String index(Model model,
-                        @RequestParam(defaultValue = "") String key,
-                        @RequestParam(defaultValue = "0") int page,
-                        @RequestParam(defaultValue = "") String sort,
-                        @RequestParam(required = false) Integer categoryId) {
+    public String searchProducts(Model model,
+                                 @RequestParam(required = false) String key,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "") String sort,
+                                 @RequestParam(required = false) Integer categoryId) {
 
-        Page<Product> products = productService.getProductByPage(page, 5);
+        Page<Product> products = productService.searchByPage(key, page, 5, sort, categoryId);
 
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("sort", sort);
+        model.addAttribute("key", key);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("categories", productService.getAllCategories());
 
