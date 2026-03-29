@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{product/_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt hàng thành công</title>
+</head>
+<body>
+<div layout:fragment="content" class="container body-content mt-4">
+    <div class="alert alert-success text-center">
+        <h2>🎉 Đặt hàng thành công!</h2>
+        <p>Mã đơn hàng: <strong th:text="${order.id}"></strong></p>
+        <p>Ngày đặt: <strong th:text="${order.orderDate}"></strong></p>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.price * item.quantity}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3"><strong>Tổng tiền</strong></td>
+            <td><strong th:text="${order.totalPrice}"></strong></td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <a th:href="@{/products}" class="btn btn-primary">Tiếp tục mua sắm</a>
+</div>
+</body>
+</html>

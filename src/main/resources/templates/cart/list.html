@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{product/_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container body-content">
+    <h1>Giỏ hàng của bạn</h1>
+
+    <!-- Nếu giỏ hàng trống -->
+    <div th:if="${#lists.isEmpty(cartItems)}">
+        <p>Giỏ hàng trống.</p>
+        <a th:href="@{/products}" class="btn btn-primary">Tiếp tục mua sắm</a>
+    </div>
+
+    <!-- Nếu có sản phẩm -->
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Hình ảnh</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${item.name}"></td>
+                <td><img th:src="${item.image}" width="100" alt=""></td>
+                <td th:text="${item.price}"></td>
+                <td>
+                    <form th:action="@{/cart/update}" method="post" class="d-flex gap-1">
+                        <input type="hidden" name="productId" th:value="${item.id}" />
+                        <input type="number" name="quantity" th:value="${item.quantity}"
+                               min="1" class="form-control form-control-sm" style="width:70px"/>
+                        <button type="submit" class="btn btn-secondary btn-sm">Cập nhật</button>
+                    </form>
+                </td>
+                <td th:text="${item.price * item.quantity}"></td>
+                <td>
+                    <a th:href="@{/cart/remove/{id}(id=${item.id})}"
+                       class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td colspan="2">
+                    <h3>Total: <span th:text="${total}"></span></h3>
+                    <div class="d-flex gap-2">
+                        <form th:action="@{/cart/order}" method="post">
+                            <button type="submit" class="btn btn-success">Order</button>
+                        </form>
+                        <a th:href="@{/cart/clear}" class="btn btn-outline-danger">Xóa tất cả</a>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <a th:href="@{/products}" class="btn btn-primary mt-2">Tiếp tục mua sắm</a>
+    </div>
+</div>
+
+</body>
+</html>

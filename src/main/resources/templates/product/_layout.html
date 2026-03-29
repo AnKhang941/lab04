@@ -9,12 +9,27 @@
           rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          rel="stylesheet">
 </head>
 <body>
 <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-    <div style="padding-left: 40px">
+    <div class="d-flex align-items-center gap-3" style="padding-left: 40px">
         <a class="navbar-brand" th:href="@{/products}">Home</a>
         <a class="navbar-brand" th:href="@{/products/create}">Products</a>
+        <form class="form-inline d-flex justify-content-start" th:action="@{/products/search}" method="get">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="key">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <!-- Icon giỏ hàng -->
+        <a th:href="@{/cart}" class="btn btn-outline-light position-relative">
+            <i class="bi bi-cart3"></i> Giỏ hàng
+            <span th:if="${cartItemCount != null and cartItemCount > 0}"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  th:text="${cartItemCount}">
+            </span>
+        </a>
     </div>
 </nav>
 
